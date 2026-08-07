@@ -17,7 +17,7 @@ export function Layout() {
     <div className="app-shell">
       <header className="site-header">
         <div className="container header-inner">
-          <NavLink to="/" className="brand">
+          <NavLink to="/home" className="brand">
             <span className="brand-mark" aria-hidden />
             <span className="brand-text">PDF Tools</span>
           </NavLink>

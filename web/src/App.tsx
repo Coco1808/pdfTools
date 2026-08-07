@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout'
+import { WelcomePage } from './pages/WelcomePage'
 import { HomePage } from './pages/HomePage'
 import { MergePage } from './pages/MergePage'
 import { InvoicePage } from './pages/InvoicePage'
@@ -13,8 +14,9 @@ import { WatermarkPage } from './pages/WatermarkPage'
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<WelcomePage />} />
       <Route element={<Layout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/merge" element={<MergePage />} />
         <Route path="/split" element={<SplitPage />} />
         <Route path="/compress" element={<CompressPage />} />
