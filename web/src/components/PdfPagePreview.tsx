@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getPdfDocument } from '../lib/pdf'
-import './PdfPagePreview.css'
+import './PdfPagePreview.less'
 
 interface Props {
   file: File | null

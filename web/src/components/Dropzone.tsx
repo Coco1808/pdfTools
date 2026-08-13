@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, type DragEvent } from 'react'
 import { motion } from 'framer-motion'
-import './Dropzone.css'
+import './Dropzone.less'
 
 interface DropzoneProps {
   onFiles: (files: File[]) => void

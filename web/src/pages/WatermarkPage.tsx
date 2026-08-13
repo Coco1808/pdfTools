@@ -4,9 +4,9 @@ import { Dropzone } from '../components/Dropzone'
 import { useToast } from '../components/Toast'
 import { downloadWatermark, watermarkPdf } from '../api/client'
 import { formatBytes, validatePdfFiles, type WatermarkResult } from '../lib/types'
-import './ToolPage.css'
-import './ReplacePage.css'
-import './ExtraTools.css'
+import './ToolPage.less'
+import './ReplacePage.less'
+import './ExtraTools.less'
 
 type Phase = 'idle' | 'working' | 'done'
 

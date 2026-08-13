@@ -1,0 +1,92 @@
+@import '../styles/variables.less';
+
+.dropzone {
+  position: relative;
+  overflow: hidden;
+  border: 1.5px dashed @line-strong;
+  border-radius: calc(@radius + 6px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(244, 247, 245, 0.35)),
+    repeating-linear-gradient(
+      -12deg,
+      transparent,
+      transparent 10px,
+      rgba(26, 95, 74, 0.02) 10px,
+      rgba(26, 95, 74, 0.02) 11px
+    );
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+
+  &.dragging {
+    border-color: @accent;
+    box-shadow: 0 0 0 4px @accent-soft, 0 20px 40px rgba(26, 95, 74, 0.12);
+
+    .dropzone-glow {
+      opacity: 1;
+      animation: breathe 1.4s ease-in-out infinite;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  &-glow {
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(circle at 50% 30%, rgba(26, 95, 74, 0.14), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &-content {
+    position: relative;
+    text-align: center;
+    padding: 36px 24px;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+  }
+
+  &-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    color: @accent;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid @line;
+    margin-bottom: 4px;
+  }
+
+  &-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  &-hint {
+    margin: 0 0 10px;
+    color: @ink-muted;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 42ch;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}

@@ -5,7 +5,7 @@ import { SortableFileList } from '../components/SortableFileList'
 import { useToast } from '../components/Toast'
 import { downloadBlob, mergePdfs } from '../api/client'
 import { formatBytes, uid, validatePdfFiles, type PdfFileItem } from '../lib/types'
-import './ToolPage.css'
+import './ToolPage.less'
 
 type Phase = 'idle' | 'working' | 'done'
 

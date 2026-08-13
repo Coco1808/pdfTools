@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="640" viewBox="0 0 1800 640">
   <text
-    x="800"
-    y="310"
+    x="900"
+    y="400"
     text-anchor="middle"
     font-family="Georgia, 'Times New Roman', serif"
-    font-size="240"
+    font-size="320"
     font-style="italic"
     fill="#f4f8f5"
   >Welcome</text>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import { ParticleObject } from '@/components/canvasui/ParticleObject'
-import { Bubble } from '@/components/canvasui/Bubble'
-import './WelcomePage.css'
+import { ParticleObject } from '../components/canvasui/ParticleObject'
+import { Bubble } from '../components/canvasui/Bubble'
+import './WelcomePage.less'
 
 export function WelcomePage() {
   return (
@@ -58,36 +58,35 @@ export function WelcomePage() {
               spring={1.1}
               damping={0.32}
               drift={0.75}
-              scale={3.6}
+              scale={9.2}
               yOffset={0.05}
               floatIntensity={1.4}
-              rotationIntensity={0.55}
+              rotationIntensity={0}
               floatSpeed={1.6}
               orbit={false}
               zoom={false}
-              autoRotate
-              autoRotateSpeed={0.55}
+              autoRotate={false}
               fov={58}
-              cameraDistance={4}
+              cameraDistance={5.2}
             />
-            <p className="welcome-sub-overlay">精密 PDF 工具集</p>
+            {/* <p className="welcome-sub-overlay">精密 PDF 工具集</p> */}
           </main>
 
           <footer className="welcome-bottom">
             <p className="welcome-tagline">
-              合并、拆分、压缩与水印——划过粒子字形，感受它们散开再归位。
+              合并、拆分、压缩与水印。
             </p>
 
             <div className="welcome-actions">
-              <Link to="/home" className="welcome-cta welcome-cta-primary">
-                <span>进入工作室</span>
+              <Link to="/docs" className="welcome-cta welcome-cta-primary">
+                <span>进入工具集</span>
                 <span className="welcome-cta-arrow" aria-hidden>
                   →
                 </span>
               </Link>
-              <Link to="/merge" className="welcome-cta welcome-cta-ghost">
+              {/* <Link to="/merge" className="welcome-cta welcome-cta-ghost">
                 立即合并
-              </Link>
+              </Link> */}
             </div>
 
             <ul className="welcome-rail" aria-label="功能预览">

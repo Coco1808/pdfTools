@@ -5,9 +5,9 @@ import { PdfPagePreview } from '../components/PdfPagePreview'
 import { useToast } from '../components/Toast'
 import { downloadTextable, processTextable } from '../api/client'
 import { formatBytes, validatePdfFiles, type TextableProcessResult } from '../lib/types'
-import './ToolPage.css'
-import './ReplacePage.css'
-import './TextablePage.css'
+import './ToolPage.less'
+import './ReplacePage.less'
+import './TextablePage.less'
 
 type Phase = 'idle' | 'working' | 'done'
 

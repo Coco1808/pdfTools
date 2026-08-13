@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import './Toast.css'
+import './Toast.less'
 
 type ToastKind = 'success' | 'error' | 'warn' | 'info'
 

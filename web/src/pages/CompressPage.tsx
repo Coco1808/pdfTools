@@ -4,9 +4,9 @@ import { Dropzone } from '../components/Dropzone'
 import { useToast } from '../components/Toast'
 import { compressPdf, downloadCompress } from '../api/client'
 import { formatBytes, validatePdfFiles, type CompressResult } from '../lib/types'
-import './ToolPage.css'
-import './ReplacePage.css'
-import './ExtraTools.css'
+import './ToolPage.less'
+import './ReplacePage.less'
+import './ExtraTools.less'
 
 type Phase = 'idle' | 'working' | 'done'
 

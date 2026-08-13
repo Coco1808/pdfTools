@@ -5,7 +5,6 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 
@@ -32,8 +31,6 @@ export interface ParticleRevealOptions {
   background?: string;
   /** Seconds the reveal takes to catch up with the cursor. Higher feels more damped. */
   smoothing?: number;
-  /** After a short dust pause, auto-reveal from the center into crisp UI. */
-  autoReveal?: boolean;
 }
 
 export interface ParticleRevealElements {
@@ -66,7 +63,6 @@ const DEFAULTS: Required<ParticleRevealOptions> = {
   threshold: 0.1,
   background: "#000000",
   smoothing: 0.25,
-  autoReveal: false,
 };
 
 type PaintableCanvas = HTMLCanvasElement & {
@@ -222,105 +218,6 @@ export function supportsHtmlInCanvas(): boolean {
   );
 }
 
-function drawSpacedText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  letterSpacing: number,
-) {
-  if (!letterSpacing) {
-    ctx.fillText(text, x, y);
-    return;
-  }
-  const chars = Array.from(text);
-  let cursor = x;
-  if (ctx.textAlign === "center") {
-    let total = 0;
-    for (const ch of chars) total += ctx.measureText(ch).width;
-    total += letterSpacing * Math.max(0, chars.length - 1);
-    cursor = x - total / 2;
-    const prev = ctx.textAlign;
-    ctx.textAlign = "left";
-    for (const ch of chars) {
-      ctx.fillText(ch, cursor, y);
-      cursor += ctx.measureText(ch).width + letterSpacing;
-    }
-    ctx.textAlign = prev;
-    return;
-  }
-  for (const ch of chars) {
-    ctx.fillText(ch, cursor, y);
-    cursor += ctx.measureText(ch).width + letterSpacing;
-  }
-}
-
-/** Rasterize DOM text into a bitmap so the WebGL dust shader works without html-in-canvas. */
-function rasterizeDomToCanvas(
-  content: HTMLElement,
-  canvas: HTMLCanvasElement,
-): Promise<boolean> {
-  const width = Math.max(1, Math.round(content.clientWidth));
-  const height = Math.max(1, Math.round(content.clientHeight));
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.max(1, Math.round(width * dpr));
-  canvas.height = Math.max(1, Math.round(height * dpr));
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return Promise.resolve(false);
-
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  const rootStyle = getComputedStyle(content);
-  ctx.fillStyle = rootStyle.backgroundColor || "#101614";
-  ctx.fillRect(0, 0, width, height);
-
-  const rootRect = content.getBoundingClientRect();
-  const candidates = content.querySelectorAll<HTMLElement>(
-    "h1,h2,h3,h4,p,span,strong,em,label,a,li,button",
-  );
-  const elements =
-    candidates.length > 0
-      ? Array.from(candidates)
-      : content.innerText.trim()
-        ? [content]
-        : [];
-
-  for (const el of elements) {
-    // Only paint leaves / simple text nodes to avoid double-drawing wrappers.
-    if (el.querySelector("h1,h2,h3,h4,p,span,strong,em,label,a,li,button")) {
-      continue;
-    }
-    const text = (el.textContent || "").replace(/\s+/g, " ").trim();
-    if (!text) continue;
-
-    const style = getComputedStyle(el);
-    const rect = el.getBoundingClientRect();
-    const x = rect.left - rootRect.left + rect.width / 2;
-    const y = rect.top - rootRect.top + rect.height / 2;
-    const letterSpacing = Number.parseFloat(style.letterSpacing) || 0;
-
-    ctx.fillStyle = style.color || "#f7fbf8";
-    ctx.font = style.font || `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    drawSpacedText(ctx, text, x, y, letterSpacing);
-  }
-
-  // Guarantee at least one bright glyph so dust never collapses to empty.
-  if (elements.length === 0) {
-    ctx.fillStyle = "#f7fbf8";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = `400 ${Math.min(width * 0.18, 96)}px Georgia, "Times New Roman", serif`;
-    ctx.fillText("Welcome", width / 2, height / 2);
-  }
-
-  return Promise.resolve(true);
-}
-
 export function createParticleReveal(
   elements: ParticleRevealElements,
   options: ParticleRevealOptions = {},
@@ -347,8 +244,6 @@ export function createParticleReveal(
 
   let contentDirty = false;
   let wake = () => {};
-  let rasterPending = false;
-  let destroyed = false;
 
   if (htmlInCanvas) {
     paintable.onpaint = () => {
@@ -359,21 +254,6 @@ export function createParticleReveal(
         wake();
       } catch {}
     };
-  }
-
-  async function captureFallback() {
-    if (htmlInCanvas || rasterPending || destroyed) return;
-    rasterPending = true;
-    try {
-      await document.fonts?.ready;
-      const ok = await rasterizeDomToCanvas(content, source);
-      if (ok && !destroyed) {
-        contentDirty = true;
-        wake();
-      }
-    } finally {
-      rasterPending = false;
-    }
   }
 
   function compile(type: number, text: string): WebGLShader {
@@ -453,8 +333,6 @@ export function createParticleReveal(
         source.height = cssHeight * dpr;
       }
       paintable.requestPaint!();
-    } else {
-      void captureFallback();
     }
   }
 
@@ -476,8 +354,7 @@ export function createParticleReveal(
   syncCanvasSize();
 
   function uploadContent() {
-    if (!contentDirty) return;
-    if (!htmlInCanvas && source.width < 2) return;
+    if (!htmlInCanvas || !contentDirty) return;
     contentDirty = false;
     gl!.bindTexture(gl!.TEXTURE_2D, contentTexture);
     gl!.texImage2D(
@@ -519,8 +396,7 @@ export function createParticleReveal(
     gl!.uniform3f(uniforms.uBg, bg[0], bg[1], bg[2]);
     gl!.uniform1f(uniforms.uTime, time);
     gl!.uniform1f(uniforms.uMaxX, contentMaxX);
-    // Keep dust active even without Chrome html-in-canvas; DOM is rasterized to the source canvas.
-    gl!.uniform1f(uniforms.uCrisp, reducedMotion ? 1 : 0);
+    gl!.uniform1f(uniforms.uCrisp, reducedMotion || !htmlInCanvas ? 1 : 0);
     gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
     gl!.viewport(0, 0, output.width, output.height);
     gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
@@ -528,9 +404,9 @@ export function createParticleReveal(
 
   let raf = 0;
   let lastTime = performance.now();
+  let destroyed = false;
   let running = false;
   let visible = true;
-  let autoRevealTimer = 0;
 
   function frame(now: number) {
     if (destroyed) return;
@@ -551,7 +427,11 @@ export function createParticleReveal(
       Math.abs(pointer.tx - pointer.x) < 0.1 &&
       Math.abs(pointer.ty - pointer.y) < 0.1 &&
       Math.abs(pointer.target - pointer.active) < 1e-3;
-    if (settled && !contentDirty && (reducedMotion || config.drift <= 0)) {
+    if (
+      settled &&
+      !contentDirty &&
+      (reducedMotion || !htmlInCanvas || config.drift <= 0)
+    ) {
       pointer.x = pointer.tx;
       pointer.y = pointer.ty;
       pointer.active = pointer.target;
@@ -571,23 +451,6 @@ export function createParticleReveal(
   wake = start;
   start();
 
-  if (config.autoReveal && !reducedMotion) {
-    const revealCenter = () => {
-      if (destroyed) return;
-      const w = Math.max(output.clientWidth, 1);
-      const h = Math.max(output.clientHeight, 1);
-      pointer.tx = w * 0.5;
-      pointer.ty = h * 0.5;
-      pointer.x = pointer.tx;
-      pointer.y = pointer.ty;
-      pointer.target = 1;
-      pointer.active = 1;
-      start();
-    };
-    // Reveal on the next frame so the rasterized Welcome is visible immediately.
-    autoRevealTimer = window.setTimeout(revealCenter, 0);
-  }
-
   function onMotionChange() {
     reducedMotion = motionQuery.matches;
     start();
@@ -600,18 +463,6 @@ export function createParticleReveal(
   });
   observer.observe(output);
   observer.observe(content);
-
-  const mutation = htmlInCanvas
-    ? null
-    : new MutationObserver(() => {
-        void captureFallback();
-      });
-  mutation?.observe(content, {
-    subtree: true,
-    childList: true,
-    characterData: true,
-    attributes: true,
-  });
 
   const intersection = new IntersectionObserver((entries) => {
     visible = entries[entries.length - 1]?.isIntersecting ?? true;
@@ -636,16 +487,7 @@ export function createParticleReveal(
   }
 
   function onPointerLeave() {
-    if (config.autoReveal) {
-      // Keep Welcome readable after the cursor leaves.
-      const w = Math.max(output.clientWidth, 1);
-      const h = Math.max(output.clientHeight, 1);
-      pointer.tx = w * 0.5;
-      pointer.ty = h * 0.5;
-      pointer.target = 1;
-    } else {
-      pointer.target = 0;
-    }
+    pointer.target = 0;
     start();
   }
 
@@ -671,9 +513,7 @@ export function createParticleReveal(
     destroy() {
       destroyed = true;
       cancelAnimationFrame(raf);
-      window.clearTimeout(autoRevealTimer);
       observer.disconnect();
-      mutation?.disconnect();
       intersection.disconnect();
       motionQuery.removeEventListener("change", onMotionChange);
       listenTarget.removeEventListener("pointermove", onPointerMove);
@@ -691,7 +531,7 @@ export function createParticleReveal(
 export interface ParticleRevealProps extends ParticleRevealOptions {
   children: ReactNode;
   className?: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 }
 
 const emptySubscribe = () => () => {};
@@ -725,7 +565,7 @@ export function ParticleReveal({
       { source, content, output },
       initialOptions,
     );
-    if (!instanceRef.current) setFailed(true);
+    if (native && !instanceRef.current) setFailed(true);
     return () => {
       instanceRef.current?.destroy();
       instanceRef.current = null;
@@ -735,24 +575,6 @@ export function ParticleReveal({
   useEffect(() => {
     instanceRef.current?.setOptions(options);
   });
-
-  const contentStyle: CSSProperties = native
-    ? {
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        overflow: "auto",
-      }
-    : {
-        // Keep layout for rasterization, but only show the WebGL dust canvas.
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-        opacity: 0,
-        pointerEvents: "none",
-      };
 
   return (
     <div className={className} style={{ position: "relative", ...style }}>
@@ -768,13 +590,29 @@ export function ParticleReveal({
         }
       >
         {native ? (
-          <div ref={contentRef} style={contentStyle}>
+          <div
+            ref={contentRef}
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              overflow: "auto",
+            }}
+          >
             {children}
           </div>
         ) : null}
       </canvas>
       {!native ? (
-        <div ref={contentRef} style={contentStyle} aria-hidden>
+        <div
+          ref={contentRef}
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            overflow: "auto",
+          }}
+        >
           {children}
         </div>
       ) : null}
@@ -786,21 +624,9 @@ export function ParticleReveal({
           inset: 0,
           width: "100%",
           height: "100%",
-          pointerEvents: failed ? "none" : "auto",
+          pointerEvents: "none",
         }}
       />
-      {failed ? (
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-            overflow: "auto",
-          }}
-        >
-          {children}
-        </div>
-      ) : null}
     </div>
   );
 }

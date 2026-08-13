@@ -35,6 +35,42 @@ npm run dev
 
 开发模式下，前端会把 `/api` 代理到后端 `8000` 端口。
 
+## Docker 部署（推荐）
+
+机器需安装 [Docker](https://docs.docker.com/engine/install/) 和 Docker Compose。阿里云 ECS 可执行：
+
+```bash
+curl -fsSL https://get.docker.com | sh
+systemctl enable --now docker
+```
+
+从 GitHub 拉取并启动：
+
+```bash
+git clone https://github.com/Coco1808/pdfTools.git pdf-tools
+cd pdf-tools
+docker compose up -d --build
+```
+
+浏览器访问 `http://服务器IP/`。默认映射 **80** 端口；若被占用：
+
+```bash
+PORT=8080 docker compose up -d --build
+```
+
+常用命令：
+
+```bash
+docker compose ps
+docker compose logs -f
+docker compose pull   # 无镜像仓库时可省略
+docker compose up -d --build   # 代码更新后重新构建
+docker compose down
+```
+
+安全组放行 `22` 和 `80`（以及你改过的 `PORT`），不要放行后端 `8000`。
+
+
 ## 功能
 
 | 页面 | 路径 | 说明 |

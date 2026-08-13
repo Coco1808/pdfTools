@@ -1,0 +1,45 @@
+// Shared design tokens. Keep in sync with :root in global.less.
+
+@bg: #e8ece9;
+@bg-elevated: #f4f7f5;
+@ink: #14201c;
+@ink-soft: #3d4f47;
+@ink-muted: #6b7c74;
+@line: rgba(20, 32, 28, 0.1);
+@line-strong: rgba(20, 32, 28, 0.18);
+@accent: #1a5f4a;
+@accent-hover: #144c3b;
+@accent-soft: rgba(26, 95, 74, 0.12);
+@accent-glow: rgba(26, 95, 74, 0.22);
+@warn: #9a6b1f;
+@warn-bg: rgba(154, 107, 31, 0.12);
+@danger: #9b3a2f;
+@danger-bg: rgba(155, 58, 47, 0.1);
+@success: #1a5f4a;
+@success-bg: rgba(26, 95, 74, 0.12);
+@radius: 14px;
+@radius-sm: 10px;
+@shadow: 0 18px 50px rgba(20, 32, 28, 0.08);
+@font-sans: 'DM Sans', system-ui, sans-serif;
+@font-display: 'Instrument Serif', Georgia, serif;
+@header-h: 68px;
+@sidebar-w: 248px;
+@white-soft: rgba(255, 255, 255, 0.55);
+@bp-sm: 560px;
+@bp-md: 720px;
+@bp-lg: 900px;
+@bp-xl: 960px;
+
+.paper-card() {
+  border-radius: @radius;
+  border: 1px solid @line;
+  background: @white-soft;
+}
+
+.hover-lift() {
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}

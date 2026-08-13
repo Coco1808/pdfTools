@@ -1,3 +1,5 @@
+@import '../styles/variables.less';
+
 .textable-workspace {
   display: grid;
   gap: 16px;
@@ -8,10 +10,6 @@
   grid-template-columns: 0.9fr 1.1fr;
   gap: 16px;
   align-items: start;
-}
-
-.file-card.compact {
-  gap: 12px;
 }
 
 .textable-file-row {
@@ -26,44 +24,42 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: var(--ink-soft);
-}
+  color: @ink-soft;
 
-.check-row input {
-  width: 16px;
-  height: 16px;
+  input {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .text-panel {
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.55);
+  .paper-card();
   padding: 16px;
   display: grid;
   gap: 12px;
   min-height: 420px;
-}
 
-.text-panel-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+  &-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
 
-.text-panel-head h2 {
-  margin: 0;
-  font-size: 1rem;
-}
+    h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+  }
 
-.text-panel-actions {
-  display: flex;
-  gap: 8px;
+  &-actions {
+    display: flex;
+    gap: 8px;
+  }
 }
 
 .text-empty {
-  color: var(--ink-muted);
+  color: @ink-muted;
   font-size: 14px;
   line-height: 1.6;
   padding: 24px 8px;
@@ -75,15 +71,7 @@
   gap: 10px;
   align-items: center;
   font-size: 13px;
-  color: var(--ink-muted);
-}
-
-.page-chip em {
-  margin-left: 4px;
-  font-style: normal;
-  font-size: 10px;
-  opacity: 0.75;
-  font-weight: 500;
+  color: @ink-muted;
 }
 
 .text-output {
@@ -91,21 +79,21 @@
   min-height: 280px;
   resize: vertical;
   border-radius: 12px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid @line-strong;
   background: #fff;
-  color: var(--ink);
+  color: @ink;
   padding: 14px;
   line-height: 1.7;
   font-size: 14px;
-  font-family: var(--font-sans);
+  font-family: @font-sans;
+
+  &:focus {
+    outline: 2px solid @accent-soft;
+    border-color: @accent;
+  }
 }
 
-.text-output:focus {
-  outline: 2px solid var(--accent-soft);
-  border-color: var(--accent);
-}
-
-@media (max-width: 960px) {
+@media (max-width: @bp-xl) {
   .textable-top {
     grid-template-columns: 1fr;
   }

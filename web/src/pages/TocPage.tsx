@@ -5,9 +5,9 @@ import { PdfPagePreview } from '../components/PdfPagePreview'
 import { useToast } from '../components/Toast'
 import { downloadToc, generateToc } from '../api/client'
 import { formatBytes, validatePdfFiles, type TocGenerateResult } from '../lib/types'
-import './ToolPage.css'
-import './ReplacePage.css'
-import './TocPage.css'
+import './ToolPage.less'
+import './ReplacePage.less'
+import './TocPage.less'
 
 type Phase = 'idle' | 'working' | 'done'
 

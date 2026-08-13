@@ -1,0 +1,162 @@
+@import '../styles/variables.less';
+
+.pending-files {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: @radius-sm;
+    background: @white-soft;
+    border: 1px solid @line;
+    font-size: 14px;
+  }
+}
+
+.invoice-table-wrap {
+  overflow-x: auto;
+  border-radius: @radius-sm;
+  border: 1px solid @line;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th,
+  td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid @line;
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: @ink-muted;
+    background: rgba(244, 247, 245, 0.8);
+  }
+
+  tr.dup {
+    background: rgba(154, 107, 31, 0.06);
+  }
+
+  select,
+  .amount-input {
+    width: 100%;
+    min-width: 120px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid @line-strong;
+    background: #fff;
+    color: @ink;
+  }
+}
+
+.cell-name {
+  font-weight: 600;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-sub {
+  margin-top: 4px;
+  color: @ink-muted;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.amount-input {
+  min-width: 100px;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+
+  li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dashed @line;
+    font-size: 13px;
+
+    &.empty {
+      color: @ink-muted;
+      border: none;
+      display: block;
+    }
+  }
+}
+
+.sum-type {
+  font-weight: 600;
+}
+
+.sum-count {
+  color: @ink-muted;
+}
+
+.sum-amount {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.grand-total {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid @line-strong;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: end;
+
+  span {
+    display: block;
+    margin-top: 4px;
+    color: @ink-muted;
+    font-size: 12px;
+  }
+}
+
+.grand-money {
+  font-family: @font-display;
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+  color: @accent;
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: @bp-md) {
+  .invoice-table th:nth-child(4),
+  .invoice-table td:nth-child(4) {
+    display: none;
+  }
+}

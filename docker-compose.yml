@@ -1,0 +1,23 @@
+services:
+  api:
+    build:
+      context: ./server
+    restart: unless-stopped
+    environment:
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://127.0.0.1}
+    volumes:
+      - pdf-temp:/app/temp
+    expose:
+      - "8000"
+
+  web:
+    build:
+      context: ./web
+    restart: unless-stopped
+    ports:
+      - "${PORT:-80}:80"
+    depends_on:
+      - api
+
+volumes:
+  pdf-temp:

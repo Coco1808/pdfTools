@@ -6,8 +6,8 @@ import { useToast } from '../components/Toast'
 import { downloadBlob, replacePdfPage } from '../api/client'
 import { getPdfPageCount } from '../lib/pdf'
 import { formatBytes, validatePdfFiles } from '../lib/types'
-import './ToolPage.css'
-import './ReplacePage.css'
+import './ToolPage.less'
+import './ReplacePage.less'
 
 type Phase = 'idle' | 'working' | 'done'
 

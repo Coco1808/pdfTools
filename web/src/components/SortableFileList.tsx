@@ -16,7 +16,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { formatBytes, type PdfFileItem } from '../lib/types'
-import './SortableFileList.css'
+import './SortableFileList.less'
 
 interface Props {
   items: PdfFileItem[]

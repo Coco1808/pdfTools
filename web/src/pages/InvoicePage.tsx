@@ -11,8 +11,8 @@ import {
   type InvoiceItem,
   type PdfFileItem,
 } from '../lib/types'
-import './ToolPage.css'
-import './InvoicePage.css'
+import './ToolPage.less'
+import './InvoicePage.less'
 
 function recompute(items: InvoiceItem[]) {
   const summaryMap = new Map<string, { invoiceType: string; count: number; totalAmount: number }>()

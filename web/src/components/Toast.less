@@ -1,3 +1,5 @@
+@import '../styles/variables.less';
+
 .toast-viewport {
   position: fixed;
   right: 20px;
@@ -20,20 +22,20 @@
   line-height: 1.45;
   box-shadow: 0 12px 30px rgba(20, 32, 28, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.08);
-}
 
-.toast-success {
-  border-left: 3px solid #5ec4a0;
-}
+  &-success {
+    border-left: 3px solid #5ec4a0;
+  }
 
-.toast-error {
-  border-left: 3px solid #e0897d;
-}
+  &-error {
+    border-left: 3px solid #e0897d;
+  }
 
-.toast-warn {
-  border-left: 3px solid #e0b56a;
-}
+  &-warn {
+    border-left: 3px solid #e0b56a;
+  }
 
-.toast-info {
-  border-left: 3px solid #8ab4a4;
+  &-info {
+    border-left: 3px solid #8ab4a4;
+  }
 }
