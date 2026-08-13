@@ -122,3 +122,44 @@ export function IconInvoice(props: IconProps) {
     </Icon>
   )
 }
+
+export function IconImages(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M5 6h14v12H5z" />
+      <circle cx="9" cy="10" r="1.4" />
+      <path d="m8 16 3.2-3.4 2.3 2.4 2.2-2.6L19 16" />
+    </Icon>
+  )
+}
+
+export function IconPdfImages(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M6 4h7l4 4v4" />
+      <path d="M13 4v4h4" />
+      <path d="M5 13h14v7H5z" />
+      <circle cx="8.4" cy="15.6" r="0.9" />
+      <path d="m7.4 20 2.2-2.2 1.6 1.5 1.7-1.8L16.8 20" />
+    </Icon>
+  )
+}
+
+export function IconNaming(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="m6 19 4.5-14h1.6L16.6 19" />
+      <path d="M7.8 13h7.2" />
+      <path d="M18.2 8v8M16.4 16.8 18.2 19l1.8-2.2" />
+    </Icon>
+  )
+}
+
+export function IconJson(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M8 5c-2 0-3 1.2-3 3v2.2c0 1-.6 1.8-2 2 1.4.2 2 1 2 2V16c0 1.8 1 3 3 3" />
+      <path d="M16 5c2 0 3 1.2 3 3v2.2c0 1 .6 1.8 2 2-1.4.2-2 1-2 2V16c0 1.8-1 3-3 3" />
+    </Icon>
+  )
+}

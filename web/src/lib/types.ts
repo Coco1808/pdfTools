@@ -155,14 +155,51 @@ export function validatePdfFiles(
   existingCount = 0,
   existingSize = 0,
 ): { ok: File[]; errors: string[] } {
+  return validateNamedFiles(incoming, existingCount, existingSize, isPdfFile, '不是 PDF 文件')
+}
+
+const IMAGE_EXTS = ['.jpg', '.jpeg', '.png', '.webp', '.bmp', '.gif', '.tif', '.tiff']
+const IMAGE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/bmp',
+  'image/gif',
+  'image/tiff',
+]
+
+function isPdfFile(file: File) {
+  return file.name.toLowerCase().endsWith('.pdf') || file.type === 'application/pdf'
+}
+
+function isImageFile(file: File) {
+  const name = file.name.toLowerCase()
+  return IMAGE_EXTS.some((ext) => name.endsWith(ext)) || IMAGE_TYPES.includes(file.type)
+}
+
+export function validateImageFiles(
+  incoming: File[],
+  existingCount = 0,
+  existingSize = 0,
+): { ok: File[]; errors: string[] } {
+  return validateNamedFiles(incoming, existingCount, existingSize, isImageFile, '不是支持的图片格式')
+}
+
+function validateNamedFiles(
+  incoming: File[],
+  existingCount: number,
+  existingSize: number,
+  isAllowed: (file: File) => boolean,
+  invalidMessage: string,
+): { ok: File[]; errors: string[] } {
   const errors: string[] = []
   const ok: File[] = []
   let count = existingCount
   let size = existingSize
 
   for (const file of incoming) {
-    if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
-      errors.push(`「${file.name}」不是 PDF 文件`)
+    if (!isAllowed(file)) {
+      errors.push(`「${file.name}」${invalidMessage}`)
       continue
     }
     if (file.size > MAX_FILE_SIZE) {

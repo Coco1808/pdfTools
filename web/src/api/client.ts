@@ -20,6 +20,22 @@ async function readError(res: Response): Promise<string> {
   }
 }
 
+export async function translateNaming(text: string): Promise<{
+  source: string
+  english: string
+  words: string[]
+}> {
+  const res = await fetch('/api/naming/translate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  })
+  if (!res.ok) {
+    throw new Error(await readError(res))
+  }
+  return res.json()
+}
+
 export async function mergePdfs(files: File[]): Promise<{ blob: Blob; fileName: string }> {
   const form = new FormData()
   files.forEach((f) => form.append('files', f))
@@ -203,6 +219,52 @@ export async function downloadWatermark(token: string, fileName: string) {
   const res = await fetch(`/api/watermark/download/${token}`)
   if (!res.ok) throw new Error(await readError(res))
   downloadBlob(await res.blob(), fileName)
+}
+
+export async function pdfToImages(
+  file: File,
+  imageFormat: 'png' | 'jpeg' = 'png',
+  dpi: 72 | 150 | 300 = 150,
+): Promise<{ blob: Blob; fileName: string }> {
+  const form = new FormData()
+  form.append('file', file)
+  form.append('image_format', imageFormat)
+  form.append('dpi', String(dpi))
+
+  const res = await fetch('/api/pdf-to-images', {
+    method: 'POST',
+    body: form,
+  })
+  if (!res.ok) {
+    throw new Error(await readError(res))
+  }
+
+  const disposition = res.headers.get('content-disposition') || ''
+  const match = /filename\*?=(?:UTF-8''|")?([^";]+)"?/i.exec(disposition)
+  const fileName = match ? decodeURIComponent(match[1]) : `pdf-images-${Date.now()}.zip`
+  return { blob: await res.blob(), fileName }
+}
+
+export async function imagesToPdf(
+  files: File[],
+  pageMode: 'a4' | 'original' = 'a4',
+): Promise<{ blob: Blob; fileName: string }> {
+  const form = new FormData()
+  files.forEach((f) => form.append('files', f))
+  form.append('page_mode', pageMode)
+
+  const res = await fetch('/api/images-to-pdf', {
+    method: 'POST',
+    body: form,
+  })
+  if (!res.ok) {
+    throw new Error(await readError(res))
+  }
+
+  const disposition = res.headers.get('content-disposition') || ''
+  const match = /filename\*?=(?:UTF-8''|")?([^";]+)"?/i.exec(disposition)
+  const fileName = match ? decodeURIComponent(match[1]) : `images-${Date.now()}.pdf`
+  return { blob: await res.blob(), fileName }
 }
 
 export function downloadBlob(blob: Blob, fileName: string) {

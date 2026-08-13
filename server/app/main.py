@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import compress, health, invoice, merge, replace, split, textable, toc, watermark
+from app.api import compress, health, images, invoice, merge, naming, replace, split, textable, toc, watermark
 from app.config import CORS_ORIGINS, TEMP_DIR
 from app.utils.cleanup import cleanup_temp_files
 
@@ -42,3 +42,5 @@ app.include_router(toc.router)
 app.include_router(split.router)
 app.include_router(compress.router)
 app.include_router(watermark.router)
+app.include_router(images.router)
+app.include_router(naming.router)

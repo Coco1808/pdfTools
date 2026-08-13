@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { docToolPaths } from '../lib/apps'
+import { docToolPaths } from '../pages/docs/cards'
+import { codeToolPaths } from '../pages/code/cards'
 import { IconCode, IconDocs, IconHome, IconLife } from './icons'
 import './Layout.less'
 
@@ -14,7 +15,7 @@ const navItems = [
 function isNavActive(kind: (typeof navItems)[number]['kind'], pathname: string) {
   if (kind === 'home') return pathname === '/home'
   if (kind === 'docs') return pathname === '/docs' || docToolPaths.includes(pathname)
-  if (kind === 'code') return pathname === '/code'
+  if (kind === 'code') return pathname === '/code' || codeToolPaths.includes(pathname)
   return pathname === '/life'
 }
 

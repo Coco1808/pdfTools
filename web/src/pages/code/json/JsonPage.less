@@ -1,0 +1,146 @@
+@import '../../../styles/variables.less';
+
+.json-page {
+  padding-top: 8px;
+}
+
+.json-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.json-pane {
+  padding: 16px 18px 18px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.json-pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  h2 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 8px 14px;
+  }
+}
+
+.json-editor {
+  width: 100%;
+  min-height: 320px;
+  resize: vertical;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid @line-strong;
+  background: #fff;
+  color: @ink;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.json-controls {
+  padding: 18px 20px 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.json-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.json-group {
+  margin: 0;
+  padding: 14px 16px 16px;
+  border: 1px solid @line;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.45);
+
+  legend {
+    padding: 0 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: @ink;
+  }
+}
+
+.json-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: @ink-soft;
+    font-size: 14px;
+    cursor: pointer;
+
+    input {
+      accent-color: @accent;
+    }
+
+    &.active {
+      border-color: @accent;
+      background: @accent-soft;
+      color: @accent;
+      font-weight: 600;
+    }
+  }
+}
+
+.json-fields {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  color: @ink-soft;
+
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid @line-strong;
+    background: #fff;
+    color: @ink;
+    font-size: 14px;
+  }
+}
+
+.json-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: @bp-lg) {
+  .json-layout,
+  .json-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: @bp-sm) {
+  .json-options {
+    grid-template-columns: 1fr;
+  }
+
+  .json-editor {
+    min-height: 240px;
+  }
+}

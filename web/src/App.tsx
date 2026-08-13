@@ -1,23 +1,28 @@
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout'
-import { WelcomePage } from './pages/WelcomePage'
-import { HomePage } from './pages/HomePage'
-import { DocsAppsPage } from './pages/DocsAppsPage'
-import { CodeAppsPage } from './pages/CodeAppsPage'
-import { LifeAppsPage } from './pages/LifeAppsPage'
-import { MergePage } from './pages/MergePage'
-import { InvoicePage } from './pages/InvoicePage'
-import { ReplacePage } from './pages/ReplacePage'
-import { TextablePage } from './pages/TextablePage'
-import { TocPage } from './pages/TocPage'
-import { SplitPage } from './pages/SplitPage'
-import { CompressPage } from './pages/CompressPage'
-import { WatermarkPage } from './pages/WatermarkPage'
+import {
+  WelcomePage,
+  HomePage,
+  DocsAppsPage,
+  CodeAppsPage,
+  LifeAppsPage,
+  MergePage,
+  SplitPage,
+  CompressPage,
+  WatermarkPage,
+  ReplacePage,
+  TextablePage,
+  TocPage,
+  InvoicePage,
+  ImagesToPdfPage,
+  PdfToImagesPage,
+  NamingPage,
+  JsonPage,
+} from './pages'
 
 export default function App() {
   return (
     <Routes>
-      {/* 进入项目先到欢迎页 */}
       <Route path="/" element={<WelcomePage />} />
 
       <Route element={<Layout />}>
@@ -33,6 +38,10 @@ export default function App() {
         <Route path="/textable" element={<TextablePage />} />
         <Route path="/toc" element={<TocPage />} />
         <Route path="/invoice" element={<InvoicePage />} />
+        <Route path="/images-to-pdf" element={<ImagesToPdfPage />} />
+        <Route path="/pdf-to-images" element={<PdfToImagesPage />} />
+        <Route path="/naming" element={<NamingPage />} />
+        <Route path="/json" element={<JsonPage />} />
       </Route>
     </Routes>
   )

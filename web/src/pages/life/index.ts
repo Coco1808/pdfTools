@@ -1,0 +1,1 @@
+export { LifeAppsPage } from './LifeAppsPage'

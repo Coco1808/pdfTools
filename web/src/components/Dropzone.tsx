@@ -6,9 +6,19 @@ interface DropzoneProps {
   onFiles: (files: File[]) => void
   disabled?: boolean
   hint?: string
+  title?: string
+  accept?: string
+  multiple?: boolean
 }
 
-export function Dropzone({ onFiles, disabled, hint }: DropzoneProps) {
+export function Dropzone({
+  onFiles,
+  disabled,
+  hint,
+  title,
+  accept = 'application/pdf,.pdf',
+  multiple = true,
+}: DropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
 
@@ -64,7 +74,7 @@ export function Dropzone({ onFiles, disabled, hint }: DropzoneProps) {
             />
           </svg>
         </div>
-        <p className="dropzone-title">拖拽 PDF 到此处，或点击选择</p>
+        <p className="dropzone-title">{title || '拖拽 PDF 到此处，或点击选择'}</p>
         <p className="dropzone-hint">
           {hint || '仅支持 .pdf · 单文件 ≤ 50MB · 合计 ≤ 100MB · 最多 20 个'}
         </p>
@@ -80,8 +90,8 @@ export function Dropzone({ onFiles, disabled, hint }: DropzoneProps) {
       <input
         ref={inputRef}
         type="file"
-        accept="application/pdf,.pdf"
-        multiple
+        accept={accept}
+        multiple={multiple}
         hidden
         disabled={disabled}
         onChange={(e) => {
