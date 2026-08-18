@@ -163,3 +163,12 @@ export function IconJson(props: IconProps) {
     </Icon>
   )
 }
+
+export function IconMarkdown(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 6h16v12H4z" />
+      <path d="m7 15 2.2-5L12 13l1.8-3 2.2 5" />
+    </Icon>
+  )
+}

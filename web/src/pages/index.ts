@@ -1,6 +1,6 @@
 export { WelcomePage } from './welcome'
 export { HomePage } from './home'
-export { CodeAppsPage, NamingPage, JsonPage } from './code'
+export { CodeAppsPage, NamingPage, JsonPage, MarkdownPage } from './code'
 export { LifeAppsPage } from './life'
 export {
   DocsAppsPage,

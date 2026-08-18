@@ -88,6 +88,7 @@ docker compose down
 | PDF 转图片 | `/pdf-to-images` | 将每一页导出为 PNG / JPG，多页打包 ZIP |
 | 变量起名 | `/naming` | 中文含义译成英文，生成常用变量/方法名并一键复制 |
 | JSON 工具 | `/json` | 格式化 JSON，提取键名、值、路径或指定字段 |
+| Markdown 编辑器 | `/markdown` | 分栏编辑与实时预览，支持保存/打开 .md |
 
 ## 限制
 

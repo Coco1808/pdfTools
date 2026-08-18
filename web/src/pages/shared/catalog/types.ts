@@ -15,6 +15,7 @@ export type AppCard = {
     | 'pdfImages'
     | 'naming'
     | 'json'
+    | 'markdown'
     | 'docs'
     | 'code'
     | 'life'

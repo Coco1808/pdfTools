@@ -18,6 +18,7 @@ import {
   PdfToImagesPage,
   NamingPage,
   JsonPage,
+  MarkdownPage,
 } from './pages'
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/pdf-to-images" element={<PdfToImagesPage />} />
         <Route path="/naming" element={<NamingPage />} />
         <Route path="/json" element={<JsonPage />} />
+        <Route path="/markdown" element={<MarkdownPage />} />
       </Route>
     </Routes>
   )
