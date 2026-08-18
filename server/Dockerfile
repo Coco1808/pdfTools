@@ -1,5 +1,4 @@
-ARG PYTHON_IMAGE=docker.m.daocloud.io/library/python:3.12-slim
-FROM ${PYTHON_IMAGE}
+FROM docker.m.daocloud.io/library/python:3.12-slim
 
 WORKDIR /app
 

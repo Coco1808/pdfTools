@@ -50,6 +50,7 @@ export function setHeading(
   end: number,
   level: number,
 ): EditorSnapshot {
+  void end
   const lineStart = value.lastIndexOf('\n', Math.max(0, start - 1)) + 1
   const lineEndIndex = value.indexOf('\n', start)
   const lineEnd = lineEndIndex === -1 ? value.length : lineEndIndex
@@ -68,6 +69,7 @@ export function insertBlock(
   end: number,
   block: string,
 ): EditorSnapshot {
+  void start
   const insertAt = end
   const needsLead = insertAt > 0 && value[insertAt - 1] !== '\n' ? '\n\n' : insertAt > 0 ? '\n' : ''
   const needsTail = insertAt < value.length && value[insertAt] !== '\n' ? '\n\n' : '\n'
