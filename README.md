@@ -70,6 +70,49 @@ docker compose down
 
 安全组放行 `22` 和 `80`（以及你改过的 `PORT`），不要放行后端 `8000`。
 
+### 国内构建加速
+
+构建慢通常是拉 Docker Hub / PyPI / npm 超时。按顺序做：
+
+**1. 配置阿里云镜像加速器（立刻生效，不必改代码）**
+
+打开 [容器镜像服务](https://cr.console.aliyun.com) → 镜像工具 → 镜像加速器，复制专属地址，在服务器执行：
+
+```bash
+mkdir -p /etc/docker
+cat >/etc/docker/daemon.json <<'EOF'
+{
+  "registry-mirrors": [
+    "https://你的加速器ID.mirror.aliyuncs.com"
+  ]
+}
+EOF
+systemctl daemon-reload
+systemctl restart docker
+```
+
+**2. 使用仓库里的国内源 Dockerfile**
+
+当前 Compose 默认走 DaoCloud 基础镜像、阿里云 Debian/PyPI、npmmirror。把最新代码拉到服务器后重建：
+
+```bash
+cd pdf-tools
+git pull
+docker compose build --progress=plain
+docker compose up -d
+```
+
+若加速镜像不可用，可改回官方源：
+
+```bash
+PYTHON_IMAGE=python:3.12-slim \
+NODE_IMAGE=node:20-alpine \
+NGINX_IMAGE=nginx:1.27-alpine \
+NPM_REGISTRY=https://registry.npmjs.org \
+PIP_INDEX=https://pypi.org/simple \
+docker compose up -d --build
+```
+
 
 ## 功能
 
