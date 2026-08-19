@@ -15,17 +15,18 @@ jobs:
     timeout-minutes: 40
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Pack project
         run: |
-          tar -czf pdf-tools.tgz \
+          tar -czf /tmp/pdf-tools.tgz \
             --exclude='.git' \
+            --exclude='./.git' \
             --exclude='web/node_modules' \
             --exclude='server/.venv' \
             --exclude='server/temp' \
-            --exclude='pdf-tools.tgz' \
             .
+          mv /tmp/pdf-tools.tgz "${GITHUB_WORKSPACE}/pdf-tools.tgz"
 
       - name: Copy to server
         uses: appleboy/scp-action@v0.1.7
