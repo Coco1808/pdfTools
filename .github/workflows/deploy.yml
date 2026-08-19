@@ -52,7 +52,7 @@ jobs:
             set -e
             DEPLOY_DIR="${{ secrets.DEPLOY_PATH }}"
             if [ -z "$DEPLOY_DIR" ]; then
-              DEPLOY_DIR=/root/pdf-tools
+              DEPLOY_DIR=/home/admin/pdf-tools
             fi
             mkdir -p "$DEPLOY_DIR"
             tar -xzf /tmp/pdf-tools.tgz -C "$DEPLOY_DIR"

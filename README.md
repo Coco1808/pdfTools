@@ -35,132 +35,11 @@ npm run dev
 
 开发模式下，前端会把 `/api` 代理到后端 `8000` 端口。
 
-## Docker 部署（推荐）
+## 生产部署（推荐）
 
-机器需安装 [Docker](https://docs.docker.com/engine/install/) 和 Docker Compose。阿里云 ECS 可执行：
+推送 `main` 后由 GitHub Actions 自动部署到阿里云 ECS，服务器不用访问 GitHub。
 
-```bash
-curl -fsSL https://get.docker.com | sh
-systemctl enable --now docker
-```
-
-从 GitHub 拉取并启动：
-
-```bash
-git clone https://github.com/Coco1808/pdfTools.git pdf-tools
-cd pdf-tools
-docker compose up -d --build
-```
-
-浏览器访问 `http://服务器IP/`。默认映射 **80** 端口；若被占用：
-
-```bash
-PORT=8080 docker compose up -d --build
-```
-
-常用命令：
-
-```bash
-docker compose ps
-docker compose logs -f
-docker compose pull   # 无镜像仓库时可省略
-docker compose up -d --build   # 代码更新后重新构建
-docker compose down
-```
-
-安全组放行 `22` 和 `80`（以及你改过的 `PORT`），不要放行后端 `8000`。
-
-### 推送 GitHub 后自动部署
-
-仓库已包含 GitHub Actions：向 `main` 推送后，会把代码传到阿里云 ECS 并执行 `docker compose up -d --build`。服务器不必再访问 GitHub。
-
-**1. 本机生成部署用 SSH 密钥（不要设置密码）**
-
-PowerShell：
-
-```powershell
-ssh-keygen -t ed25519 -C "github-deploy" -f $env:USERPROFILE\.ssh\pdftools_deploy -N ""
-```
-
-会得到：
-
-- 私钥：`C:\Users\你的用户名\.ssh\pdftools_deploy`
-- 公钥：`C:\Users\你的用户名\.ssh\pdftools_deploy.pub`
-
-**2. 把公钥放到服务器**
-
-```bash
-# 在 ECS 上执行
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-echo "这里粘贴公钥整行" >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-```
-
-**3. 阿里云安全组**
-
-`22` 需允许 GitHub Actions 连入。最简单是 `22` 对 `0.0.0.0/0` 放行，并**只允许密钥登录、关闭密码登录**。
-
-**4. 在 GitHub 仓库添加 Secrets**
-
-打开仓库 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**：
-
-| Name | 值 |
-| --- | --- |
-| `SERVER_HOST` | ECS 公网 IP |
-| `SERVER_USER` | 一般是 `root` |
-| `SSH_PRIVATE_KEY` | `pdftools_deploy` **私钥全文**（含 `BEGIN` / `END` 两行） |
-| `DEPLOY_PATH` | 可选，默认 `/root/pdf-tools` |
-
-**5. 推送后看部署结果**
-
-把工作流文件提交并推到 `main`。之后每次推送 `main`，在仓库 **Actions** 里查看 `Deploy` 是否成功。也可在 Actions 页手动点 **Run workflow**。
-
-首次部署要等 Docker 构建结束，大约几分钟到十几分钟。
-
-
-### 国内构建加速
-
-构建慢通常是拉 Docker Hub / PyPI / npm 超时。按顺序做：
-
-**1. 配置阿里云镜像加速器（立刻生效，不必改代码）**
-
-打开 [容器镜像服务](https://cr.console.aliyun.com) → 镜像工具 → 镜像加速器，复制专属地址，在服务器执行：
-
-```bash
-mkdir -p /etc/docker
-cat >/etc/docker/daemon.json <<'EOF'
-{
-  "registry-mirrors": [
-    "https://你的加速器ID.mirror.aliyuncs.com"
-  ]
-}
-EOF
-systemctl daemon-reload
-systemctl restart docker
-```
-
-**2. 使用仓库里的国内源 Dockerfile**
-
-当前 Compose 默认走 DaoCloud 基础镜像、阿里云 Debian/PyPI、npmmirror。把最新代码拉到服务器后重建：
-
-```bash
-cd pdf-tools
-git pull
-docker compose build --progress=plain
-docker compose up -d
-```
-
-若加速镜像不可用，可改回官方源：
-
-```bash
-PYTHON_IMAGE=python:3.12-slim \
-NODE_IMAGE=node:20-alpine \
-NGINX_IMAGE=nginx:1.27-alpine \
-NPM_REGISTRY=https://registry.npmjs.org \
-PIP_INDEX=https://pypi.org/simple \
-docker compose up -d --build
-```
+完整步骤（密钥、安全组、Secrets、排障）见 **[DEPLOY.md](./DEPLOY.md)**。
 
 
 ## 功能
@@ -195,5 +74,6 @@ docker compose up -d --build
 pdf-tools/
 ├── web/          # 前端
 ├── server/       # 后端
+├── DEPLOY.md     # 自动化部署
 └── 需求文档.md
 ```
