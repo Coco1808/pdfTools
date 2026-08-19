@@ -57,7 +57,7 @@ async def _save_upload(upload: UploadFile) -> tuple[str, Path]:
     if not data:
         raise TocError(f"「{filename}」是空文件")
     if len(data) > MAX_FILE_SIZE:
-        raise TocError(f"「{filename}」超过 50MB 限制")
+        raise TocError(f"「{filename}」超过 500MB 限制")
     if not _validate_pdf_magic(data):
         raise TocError(f"「{filename}」不是有效的 PDF")
     path = TEMP_DIR / f"{uuid.uuid4().hex}.pdf"

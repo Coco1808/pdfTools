@@ -81,7 +81,7 @@ export function ImagesToPdfPage() {
               onFiles={addFiles}
               disabled={phase === 'working'}
               title="拖拽图片到此处，或点击选择"
-              hint="支持 JPG / PNG / WEBP / BMP / GIF · 单文件 ≤ 50MB · 合计 ≤ 100MB · 最多 20 张"
+              hint="支持 JPG / PNG / WEBP / BMP / GIF · 单文件 ≤ 500MB · 合计 ≤ 500MB · 最多 20 张"
               accept={IMAGE_ACCEPT}
             />
           ) : (

@@ -46,7 +46,7 @@ async def watermark_pdf(
     if not data:
         raise WatermarkError(f"「{filename}」是空文件")
     if len(data) > MAX_FILE_SIZE:
-        raise WatermarkError(f"「{filename}」超过 50MB 限制")
+        raise WatermarkError(f"「{filename}」超过 500MB 限制")
     if not _validate_pdf_magic(data):
         raise WatermarkError(f"「{filename}」不是有效的 PDF")
 

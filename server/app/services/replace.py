@@ -30,7 +30,7 @@ async def _read_pdf_upload(upload: UploadFile, label: str) -> tuple[bytes, str, 
     if len(data) == 0:
         raise ReplaceError(f"「{filename}」是空文件")
     if len(data) > MAX_FILE_SIZE:
-        raise ReplaceError(f"「{filename}」超过 50MB 限制")
+        raise ReplaceError(f"「{filename}」超过 500MB 限制")
     if not _validate_pdf_magic(data):
         raise ReplaceError(f"「{filename}」不是有效的 PDF")
 

@@ -87,10 +87,10 @@ async def images_to_pdf(files: list[UploadFile], page_mode: str = "a4") -> tuple
             if size == 0:
                 raise ImagesToPdfError(f"「{filename}」是空文件")
             if size > MAX_FILE_SIZE:
-                raise ImagesToPdfError(f"「{filename}」超过 50MB 限制")
+                raise ImagesToPdfError(f"「{filename}」超过 500MB 限制")
             total_size += size
             if total_size > MAX_TOTAL_SIZE:
-                raise ImagesToPdfError("全部文件合计超过 100MB 限制")
+                raise ImagesToPdfError("全部文件合计超过 500MB 限制")
 
             kind = _sniff_image(data) or EXT_TO_KIND.get(suffix)
             if not kind:
@@ -203,7 +203,7 @@ async def pdf_to_images(
     if not data:
         raise PdfToImagesError(f"「{filename}」是空文件")
     if len(data) > MAX_FILE_SIZE:
-        raise PdfToImagesError(f"「{filename}」超过 50MB 限制")
+        raise PdfToImagesError(f"「{filename}」超过 500MB 限制")
     if not _validate_pdf_magic(data):
         raise PdfToImagesError(f"「{filename}」不是有效的 PDF")
 

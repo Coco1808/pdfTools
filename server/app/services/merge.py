@@ -42,10 +42,10 @@ async def merge_pdfs(files: list[UploadFile]) -> tuple[Path, str]:
             if size == 0:
                 raise MergeError(f"「{filename}」是空文件")
             if size > MAX_FILE_SIZE:
-                raise MergeError(f"「{filename}」超过 50MB 限制")
+                raise MergeError(f"「{filename}」超过 500MB 限制")
             total_size += size
             if total_size > MAX_TOTAL_SIZE:
-                raise MergeError("全部文件合计超过 100MB 限制")
+                raise MergeError("全部文件合计超过 500MB 限制")
             if not _validate_pdf_magic(data):
                 raise MergeError(f"「{filename}」不是有效的 PDF（文件头校验失败）")
 

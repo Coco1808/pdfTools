@@ -31,7 +31,7 @@ async def _save_upload(upload: UploadFile) -> tuple[str, Path, bytes]:
     if not data:
         raise SplitError(f"「{filename}」是空文件")
     if len(data) > MAX_FILE_SIZE:
-        raise SplitError(f"「{filename}」超过 50MB 限制")
+        raise SplitError(f"「{filename}」超过 500MB 限制")
     if not _validate_pdf_magic(data):
         raise SplitError(f"「{filename}」不是有效的 PDF")
     path = TEMP_DIR / f"{uuid.uuid4().hex}.pdf"

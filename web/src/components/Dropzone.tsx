@@ -76,7 +76,7 @@ export function Dropzone({
         </div>
         <p className="dropzone-title">{title || '拖拽 PDF 到此处，或点击选择'}</p>
         <p className="dropzone-hint">
-          {hint || '仅支持 .pdf · 单文件 ≤ 50MB · 合计 ≤ 100MB · 最多 20 个'}
+          {hint || '仅支持 .pdf · 单文件 ≤ 500MB · 合计 ≤ 500MB · 最多 20 个'}
         </p>
         <button
           type="button"

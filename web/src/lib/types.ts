@@ -1,6 +1,6 @@
 export const MAX_FILES = 20
-export const MAX_FILE_SIZE = 50 * 1024 * 1024
-export const MAX_TOTAL_SIZE = 100 * 1024 * 1024
+export const MAX_FILE_SIZE = 500 * 1024 * 1024
+export const MAX_TOTAL_SIZE = 500 * 1024 * 1024
 
 export const INVOICE_TYPES = [
   '增值税专用发票',
@@ -203,7 +203,7 @@ function validateNamedFiles(
       continue
     }
     if (file.size > MAX_FILE_SIZE) {
-      errors.push(`「${file.name}」超过 50MB 限制`)
+      errors.push(`「${file.name}」超过 500MB 限制`)
       continue
     }
     if (count + 1 > MAX_FILES) {
@@ -211,7 +211,7 @@ function validateNamedFiles(
       break
     }
     if (size + file.size > MAX_TOTAL_SIZE) {
-      errors.push('全部文件合计超过 100MB 限制')
+      errors.push('全部文件合计超过 500MB 限制')
       break
     }
     ok.push(file)

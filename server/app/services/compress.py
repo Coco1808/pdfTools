@@ -74,7 +74,7 @@ async def compress_pdf(upload: UploadFile, quality: str = "medium") -> dict:
     if not data:
         raise CompressError(f"「{filename}」是空文件")
     if len(data) > MAX_FILE_SIZE:
-        raise CompressError(f"「{filename}」超过 50MB 限制")
+        raise CompressError(f"「{filename}」超过 500MB 限制")
     if not _validate_pdf_magic(data):
         raise CompressError(f"「{filename}」不是有效的 PDF")
 

@@ -243,10 +243,10 @@ async def analyze_invoices(files: list[UploadFile]) -> dict:
             if size == 0:
                 raise InvoiceError(f"「{filename}」是空文件")
             if size > MAX_FILE_SIZE:
-                raise InvoiceError(f"「{filename}」超过 50MB 限制")
+                raise InvoiceError(f"「{filename}」超过 500MB 限制")
             total_size += size
             if total_size > MAX_TOTAL_SIZE:
-                raise InvoiceError("全部文件合计超过 100MB 限制")
+                raise InvoiceError("全部文件合计超过 500MB 限制")
             if not _validate_pdf_magic(data):
                 raise InvoiceError(f"「{filename}」不是有效的 PDF")
 
