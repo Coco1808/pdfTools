@@ -58,5 +58,22 @@ jobs:
             tar -xzf /tmp/pdf-tools.tgz -C "$DEPLOY_DIR"
             rm -f /tmp/pdf-tools.tgz
             cd "$DEPLOY_DIR"
-            docker compose up -d --build
-            docker compose ps
+            run_compose() {
+              docker compose up -d --build
+              docker compose ps
+            }
+            if docker info >/dev/null 2>&1; then
+              run_compose
+            elif sg docker -c "docker info" >/dev/null 2>&1; then
+              sg docker -c "docker compose up -d --build && docker compose ps"
+            elif sudo -n docker info >/dev/null 2>&1; then
+              sudo docker compose up -d --build
+              sudo docker compose ps
+            else
+              echo "admin 无法使用 Docker。在服务器执行后重新部署："
+              echo "  sudo usermod -aG docker admin"
+              echo "然后退出 SSH 再登录，执行 docker ps 确认。"
+              id
+              ls -l /var/run/docker.sock || true
+              exit 1
+            fi
