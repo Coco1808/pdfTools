@@ -5,6 +5,7 @@ from pathlib import Path
 MAX_FILES = 20
 MAX_FILE_SIZE = 500 * 1024 * 1024  # 500MB
 MAX_TOTAL_SIZE = 500 * 1024 * 1024  # 500MB
+MAX_PDF_PAGES = 1000
 
 # Paths
 BASE_DIR = Path(__file__).resolve().parent.parent

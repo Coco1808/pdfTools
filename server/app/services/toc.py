@@ -10,9 +10,8 @@ from pathlib import Path
 import fitz
 from fastapi import UploadFile
 
-from app.config import MAX_FILE_SIZE, TEMP_DIR
+from app.config import MAX_FILE_SIZE, MAX_PDF_PAGES, TEMP_DIR
 
-MAX_PAGES = 200
 MAX_TOC_ENTRIES = 200
 MIN_HEADING_LEN = 2
 MAX_HEADING_LEN = 80
@@ -341,8 +340,8 @@ async def generate_toc(upload: UploadFile) -> dict:
         original_pages = doc.page_count
         if original_pages == 0:
             raise TocError("PDF 没有可处理的页面")
-        if original_pages > MAX_PAGES:
-            raise TocError(f"单次最多处理 {MAX_PAGES} 页")
+        if original_pages > MAX_PDF_PAGES:
+            raise TocError(f"单次最多处理 {MAX_PDF_PAGES} 页")
 
         entries, method = detect_toc_entries(doc)
         entries = [e for e in entries if e.title and e.title.strip()]

@@ -1,6 +1,7 @@
 export const MAX_FILES = 20
 export const MAX_FILE_SIZE = 500 * 1024 * 1024
 export const MAX_TOTAL_SIZE = 500 * 1024 * 1024
+export const MAX_PDF_PAGES = 1000
 
 export const INVOICE_TYPES = [
   '增值税专用发票',

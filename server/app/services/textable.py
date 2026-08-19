@@ -10,10 +10,9 @@ from pathlib import Path
 import fitz  # PyMuPDF
 from fastapi import UploadFile
 
-from app.config import MAX_FILE_SIZE, TEMP_DIR
+from app.config import MAX_FILE_SIZE, MAX_PDF_PAGES, TEMP_DIR
 
 TEXT_CHAR_THRESHOLD = 20
-MAX_OCR_PAGES = 30
 OCR_SCALE = 2.0
 
 CJK_FONT_CANDIDATES = [
@@ -159,8 +158,8 @@ async def process_textable(upload: UploadFile, force_ocr: bool = False) -> dict:
         page_count = doc.page_count
         if page_count == 0:
             raise TextableError("PDF 没有可处理的页面")
-        if page_count > MAX_OCR_PAGES:
-            raise TextableError(f"单次最多处理 {MAX_OCR_PAGES} 页，请拆分后再试")
+        if page_count > MAX_PDF_PAGES:
+            raise TextableError(f"单次最多处理 {MAX_PDF_PAGES} 页，请拆分后再试")
 
         page_results: list[PageText] = []
         ocr_pages = 0

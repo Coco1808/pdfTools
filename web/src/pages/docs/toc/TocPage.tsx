@@ -4,7 +4,7 @@ import { Dropzone } from '../../../components/Dropzone'
 import { PdfPagePreview } from '../../../components/PdfPagePreview'
 import { useToast } from '../../../components/Toast'
 import { downloadToc, generateToc } from '../../../api/client'
-import { formatBytes, validatePdfFiles, type TocGenerateResult } from '../../../lib/types'
+import { formatBytes, MAX_PDF_PAGES, validatePdfFiles, type TocGenerateResult } from '../../../lib/types'
 import '../styles/ToolPage.less'
 import '../styles/ReplacePage.less'
 import './TocPage.less'
@@ -69,7 +69,7 @@ export function TocPage() {
       <div className="tool-layout">
         <div className="tool-main panel replace-main">
           {!file ? (
-            <Dropzone onFiles={onFiles} disabled={busy} hint="上传需要生成目录的 PDF（单文件）" />
+            <Dropzone onFiles={onFiles} disabled={busy} hint={`上传需要生成目录的 PDF（单文件 · 最多 ${MAX_PDF_PAGES} 页）`} />
           ) : (
             <div className="toc-workspace">
               <div className="file-card compact">

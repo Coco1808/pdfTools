@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Dropzone } from '../../../components/Dropzone'
 import { useToast } from '../../../components/Toast'
 import { downloadBlob, pdfToImages } from '../../../api/client'
-import { formatBytes, validatePdfFiles } from '../../../lib/types'
+import { formatBytes, MAX_PDF_PAGES, validatePdfFiles } from '../../../lib/types'
 import '../styles/ToolPage.less'
 import '../styles/ReplacePage.less'
 import '../styles/ExtraTools.less'
@@ -74,7 +74,7 @@ export function PdfToImagesPage() {
             <Dropzone
               onFiles={onFiles}
               disabled={busy}
-              hint="上传要转换的 PDF（单文件 · 最多 80 页）"
+              hint={`上传要转换的 PDF（单文件 · 最多 ${MAX_PDF_PAGES} 页）`}
             />
           ) : (
             <div className="extra-workspace">
@@ -140,7 +140,7 @@ export function PdfToImagesPage() {
         <aside className="tool-side">
           <div className="side-card panel">
             <h2>操作</h2>
-            <p className="side-tip">150 DPI 适合大多数场景。超过 80 页请先拆分再转换。</p>
+            <p className="side-tip">150 DPI 适合大多数场景。超过 {MAX_PDF_PAGES} 页请先拆分再转换。</p>
             <AnimatePresence mode="wait">
               {phase === 'working' && (
                 <motion.div key="w" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="status-block">

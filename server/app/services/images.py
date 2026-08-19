@@ -8,9 +8,8 @@ from pathlib import Path
 import fitz
 from fastapi import UploadFile
 
-from app.config import MAX_FILE_SIZE, MAX_FILES, MAX_TOTAL_SIZE, TEMP_DIR
+from app.config import MAX_FILE_SIZE, MAX_FILES, MAX_PDF_PAGES, MAX_TOTAL_SIZE, TEMP_DIR
 
-MAX_PDF_PAGES = 80
 ALLOWED_DPI = {72, 150, 300}
 JPEG_QUALITY = 85
 MAX_RENDER_SIDE = 4000

@@ -4,7 +4,7 @@ import { Dropzone } from '../../../components/Dropzone'
 import { PdfPagePreview } from '../../../components/PdfPagePreview'
 import { useToast } from '../../../components/Toast'
 import { downloadTextable, processTextable } from '../../../api/client'
-import { formatBytes, validatePdfFiles, type TextableProcessResult } from '../../../lib/types'
+import { formatBytes, MAX_PDF_PAGES, validatePdfFiles, type TextableProcessResult } from '../../../lib/types'
 import '../styles/ToolPage.less'
 import '../styles/ReplacePage.less'
 import './TextablePage.less'
@@ -105,7 +105,7 @@ export function TextablePage() {
       <div className="tool-layout textable-layout">
         <div className="tool-main panel replace-main">
           {!file ? (
-            <Dropzone onFiles={onFiles} disabled={busy} hint="上传 PDF（单文件，建议 ≤ 30 页）" />
+            <Dropzone onFiles={onFiles} disabled={busy} hint={`上传 PDF（单文件 · 最多 ${MAX_PDF_PAGES} 页）`} />
           ) : (
             <div className="textable-workspace">
               <div className="textable-top">
