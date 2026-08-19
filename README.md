@@ -70,6 +70,55 @@ docker compose down
 
 安全组放行 `22` 和 `80`（以及你改过的 `PORT`），不要放行后端 `8000`。
 
+### 推送 GitHub 后自动部署
+
+仓库已包含 GitHub Actions：向 `main` 推送后，会把代码传到阿里云 ECS 并执行 `docker compose up -d --build`。服务器不必再访问 GitHub。
+
+**1. 本机生成部署用 SSH 密钥（不要设置密码）**
+
+PowerShell：
+
+```powershell
+ssh-keygen -t ed25519 -C "github-deploy" -f $env:USERPROFILE\.ssh\pdftools_deploy -N ""
+```
+
+会得到：
+
+- 私钥：`C:\Users\你的用户名\.ssh\pdftools_deploy`
+- 公钥：`C:\Users\你的用户名\.ssh\pdftools_deploy.pub`
+
+**2. 把公钥放到服务器**
+
+```bash
+# 在 ECS 上执行
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "这里粘贴公钥整行" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+**3. 阿里云安全组**
+
+`22` 需允许 GitHub Actions 连入。最简单是 `22` 对 `0.0.0.0/0` 放行，并**只允许密钥登录、关闭密码登录**。
+
+**4. 在 GitHub 仓库添加 Secrets**
+
+打开仓库 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**：
+
+| Name | 值 |
+| --- | --- |
+| `SERVER_HOST` | ECS 公网 IP |
+| `SERVER_USER` | 一般是 `root` |
+| `SSH_PRIVATE_KEY` | `pdftools_deploy` **私钥全文**（含 `BEGIN` / `END` 两行） |
+| `DEPLOY_PATH` | 可选，默认 `/root/pdf-tools` |
+
+**5. 推送后看部署结果**
+
+把工作流文件提交并推到 `main`。之后每次推送 `main`，在仓库 **Actions** 里查看 `Deploy` 是否成功。也可在 Actions 页手动点 **Run workflow**。
+
+首次部署要等 Docker 构建结束，大约几分钟到十几分钟。
+
+
 ### 国内构建加速
 
 构建慢通常是拉 Docker Hub / PyPI / npm 超时。按顺序做：
